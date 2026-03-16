@@ -84,3 +84,28 @@ if process_btn:
                     st.markdown("**홈페이지 업로드용 데이터**")
                 with copy_col2:
                     # JavaScript 복사 버튼 생성
+                    safe_text = final_result.replace("`", "\\`").replace("\n", "\\n")
+                    components.html(f"""
+                        <button id="copyBtn" style="
+                            width: 100%; height: 35px; background-color: #6C5CE7; color: white;
+                            border: none; border-radius: 4px; cursor: pointer; font-weight: bold;
+                        ">데이터 복사</button>
+                        <script>
+                            document.getElementById('copyBtn').onclick = function() {{
+                                navigator.clipboard.writeText(`{safe_text}`);
+                                this.innerText = '복사 완료!';
+                                this.style.backgroundColor = '#00B894';
+                                setTimeout(() => {{
+                                    this.innerText = '데이터 복사';
+                                    this.style.backgroundColor = '#6C5CE7';
+                                }}, 2000);
+                            }};
+                        </script>
+                    """, height=45)
+
+                st.code(final_result, language=None)
+                st.success(f"총 {len(excel_rows)}개의 데이터를 가공했습니다.")
+        else:
+            st.warning("로그에서 OUT 데이터를 찾을 수 없습니다.")
+    else:
+        st.warning("데이터를 먼저 입력해주세요.")
